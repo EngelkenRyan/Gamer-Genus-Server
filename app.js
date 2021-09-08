@@ -1,10 +1,14 @@
+require("dotenv").config()
 const Express = require("express");
 const app = Express();
 const dbConnection = require('./db')
 
 const controllers = require("./controllers")
 
+app.use(Express.json());
+
 app.use("/review", controllers.reviewController)
+app.use("/user", controllers.userController)
 
 dbConnection.authenticate()
     .then(() => dbConnection.sync())
