@@ -7,8 +7,11 @@ const controllers = require("./controllers")
 
 app.use(Express.json());
 
-app.use("/review", controllers.reviewController)
 app.use("/user", controllers.userController)
+app.use("/savedgame", controllers.savedgameController)
+
+app.use(require("./middleware/validate-jwt"))
+app.use("/review", controllers.reviewController)
 
 dbConnection.authenticate()
     .then(() => dbConnection.sync())
