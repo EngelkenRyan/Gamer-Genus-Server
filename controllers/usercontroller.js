@@ -5,13 +5,14 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
 
 router.post("/register", async (req,res) => {
-    let { email, username, password } = req.body.user;
-    
+
+    let { email, username, password, role } = req.body.user;
     try{
     const User = await UserModel.create({
         email,
         username,
         password: bcrypt.hashSync(password, 14),
+        role
     })
 
     let token = jwt.sign({id: User.id}, process.env.JWT_SECRET, {expiresIn: 60 * 60 * 12})
@@ -19,12 +20,13 @@ router.post("/register", async (req,res) => {
     res.status(200).json({
         message: "User successfully register",
         user: User,
-        sessionToken: token
+        sessionToken: token,
+        // role
     })
 } catch (err) {
     if (err instanceof UniqueConstraintError) {
         res.status(409).json({
-            message: "Email already in use",
+            message: "Email or username already in use",
         })
     } else {
     res.status(500).json({

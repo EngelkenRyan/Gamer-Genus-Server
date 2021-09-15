@@ -16,9 +16,9 @@ const User = db.define("user", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    admin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true
+    role: {
+        type: DataTypes.STRING,
+        allowNull: false
     },
 });
 
