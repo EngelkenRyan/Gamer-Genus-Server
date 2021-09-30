@@ -10,8 +10,8 @@ router.get('/practice', (req,res) => {
 
 // Savedgame Create
 router.post("/savedcreate", validateJWT, async (req,res) => {
-    if (req.user.role === "admin" || req.user.role === "user") {
-    const { gametitle, genre, description, platform } = req.body.savedgame;
+    if (req.user.role == "admin" || req.user.role == "user") {
+    const { gametitle, genre, description, platform } = req.body;
     const { id } = req.user;
     const savedEntry = {
         gametitle,
@@ -31,8 +31,8 @@ router.post("/savedcreate", validateJWT, async (req,res) => {
 
 // Savedgame Update
 router.put("/savedupdate/:descriptionId", validateJWT, async (req, res) => {
-    if (req.user.role === "user"){
-    const { gametitle, genre, description, platform } = req.body.savedgame;
+    if (req.user.role == "user"){
+    const { gametitle, genre, description, platform } = req.body;
     const descriptionId = req.params.descriptionId;
     const userId = req.user.id;
 
@@ -56,8 +56,8 @@ router.put("/savedupdate/:descriptionId", validateJWT, async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err })
     }
-} else if (req.user.role === "admin") {
-    const { gametitle, genre, description, platform } = req.body.savedgame;
+} else if (req.user.role == "admin") {
+    const { gametitle, genre, description, platform } = req.body;
     const descriptionId = req.params.descriptionId;
 
     const query = {
@@ -85,7 +85,7 @@ router.put("/savedupdate/:descriptionId", validateJWT, async (req, res) => {
 // Saved Game Delete
 
 router.delete("/saveddelete/:id", validateJWT, async (req, res) => {
-    if (req.user.role === "user") {
+    if (req.user.role == "user") {
     const userId = req.user.id
     const descriptionId = req.params.id;
 
@@ -101,7 +101,7 @@ router.delete("/saveddelete/:id", validateJWT, async (req, res) => {
     } catch (err) {
         res.status(500).json({ error: err })
     }
-} else if (req.user.role === "admin") {
+} else if (req.user.role == "admin") {
     const descriptionId = req.params.id;
 
     try {
@@ -121,7 +121,7 @@ router.delete("/saveddelete/:id", validateJWT, async (req, res) => {
 // Saved Game Mine
 
 router.get("/savedmine", validateJWT, async (req, res) => {
-    if (req.user.role === 'user') {
+    if (req.user.role == 'user') {
         const { id } = req.user;
         try {
             const savedGames = await SavedgameModel.findAll({
@@ -133,7 +133,7 @@ router.get("/savedmine", validateJWT, async (req, res) => {
         } catch (err) {
             res.status(500).json({ error: err })
         }
-    } else if (req.user.role === 'admin') {
+    } else if (req.user.role == 'admin') {
         try {
             const entries = await SavedgameModel.findAll();
             res.status(200).json(entries);

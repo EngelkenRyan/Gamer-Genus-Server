@@ -2,20 +2,20 @@ const Express = require("express");
 const router = Express.Router();
 let validateJWT = require("../middleware/validate-jwt");
 
-const { ReviewModel, SavedgameModel } = require("../models")
+const { ReviewModel } = require("../models")
 
 // router.get('/practice', validateJWT, (req,res) => {
 //     res.send('Hey!! This is a practice route!')
 // })
 
-
 // Review Create
 router.post("/create", validateJWT, async (req,res) => {
     if (req.user.role === "admin" || req.user.role === "user"){
-    const { gametitle, date, feedback, rating } = req.body.review;
+    const { gametitle, gameimage, date, feedback, rating } = req.body;
     const { id } = req.user;
     const reviewEntry = {
         gametitle,
+        gameimage,
         date,
         feedback,
         rating,
@@ -34,7 +34,7 @@ router.post("/create", validateJWT, async (req,res) => {
 
 router.put("/update/:feedbackId", validateJWT, async (req, res) => {
     if (req.user.role === "user"){
-    const { gametitle, date, feedback, rating } = req.body.review;
+    const { gametitle, date, feedback, rating } = req.body;
     const reviewId = req.params.feedbackId;
     const userId = req.user.id;
 
@@ -59,7 +59,7 @@ router.put("/update/:feedbackId", validateJWT, async (req, res) => {
         res.status(500).json({ error:err });
     }
 } else if (req.user.role === "admin") {
-    const { gametitle, date, feedback, rating } = req.body.review;
+    const { gametitle, date, feedback, rating } = req.body;
     const reviewId = req.params.feedbackId;
 
     const query = {

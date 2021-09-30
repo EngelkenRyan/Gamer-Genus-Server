@@ -6,7 +6,7 @@ const bcrypt = require("bcryptjs")
 
 router.post("/register", async (req,res) => {
 
-    let { email, username, password, role } = req.body.user;
+    let { email, username, password, role } = req.body;
     try{
     const User = await UserModel.create({
         email,
@@ -38,7 +38,7 @@ router.post("/register", async (req,res) => {
 
 
 router.post("/login", async (req, res) => {
-    let { email, password } = req.body.user;
+    let { email, password } = req.body;
 
     try {
     const loginUser = await UserModel.findOne({
